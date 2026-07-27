@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: taskflow
+
+  datasource:
+    # Supabase Project Settings -> Database -> Connection string (Direct connection)
+    # Example: jdbc:postgresql://db.<project-ref>.supabase.co:5432/postgres
+    url: ${SUPABASE_DB_URL}
+    username: ${SUPABASE_DB_USER:postgres}
+    password: ${SUPABASE_DB_PASSWORD}
+    hikari:
+      # keep it small — Supabase free tier has a limited connection pool
+      maximum-pool-size: 5
+
+  jpa:
+    hibernate:
+      # never let JPA auto-manage schema here — Supabase migrations own the schema
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Supabase Project Settings -> API -> JWT Secret, used to validate incoming tokens
+          issuer-uri: ${SUPABASE_JWT_ISSUER:}
+
+server:
+  port: 8080
+
+supabase:
+  url: ${SUPABASE_URL}
+  anon-key: ${SUPABASE_ANON_KEY}
+  jwt-secret: ${SUPABASE_JWT_SECRET}
