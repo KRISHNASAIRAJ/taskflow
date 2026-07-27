@@ -1,0 +1,90 @@
+name: Actions Playground
+
+# TRIGGER: what makes this workflow run at all.
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:   # adds a manual "Run workflow" button in the Actions tab
+
+jobs:
+
+  # ============================================================
+  # JOB 1: say-hello
+  # Runs on its own fresh Ubuntu VM. Nothing from your repo exists
+  # here until you explicitly check it out.
+  # ============================================================
+  say-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Just a shell command
+        run: echo "Hello from a brand new virtual machine!"
+
+      - name: Prove nothing exists yet
+        run: ls -la   # will be empty — we haven't checked out the repo
+
+      - name: Check out the repo (this is a reusable Action from the marketplace)
+        uses: actions/checkout@v4
+
+      - name: Now the repo's files exist
+        run: ls -la
+
+      - name: Use an environment variable
+        env:
+          MY_MESSAGE: "set at the step level"
+        run: echo "The message is: $MY_MESSAGE"
+
+      - name: Steps run top to bottom, and share the same filesystem
+        run: |
+          echo "This step can see files the previous step created."
+          mkdir -p demo-data
+          echo "hello-from-step-6" > demo-data/greeting.txt
+          cat demo-data/greeting.txt
+
+      - name: Upload what we made as a downloadable artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: greeting-file
+          path: demo-data/greeting.txt
+
+  # ============================================================
+  # JOB 2: uses-a-secret
+  # Runs in PARALLEL with say-hello by default (separate VM).
+  # ============================================================
+  uses-a-secret:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read a secret (add one called PLAYGROUND_SECRET in repo Settings)
+        env:
+          MY_SECRET: ${{ secrets.PLAYGROUND_SECRET }}
+        run: |
+          if [ -z "$MY_SECRET" ]; then
+            echo "No secret set yet — add PLAYGROUND_SECRET in Settings > Secrets to see this work"
+          else
+            echo "Got a secret! Its length is ${#MY_SECRET} characters (never print the value itself)"
+          fi
+
+  # ============================================================
+  # JOB 3: runs-after-both
+  # "needs:" makes this WAIT for the other two jobs to finish first,
+  # instead of running in parallel with them.
+  # ============================================================
+  runs-after-both:
+    runs-on: ubuntu-latest
+    needs: [say-hello, uses-a-secret]
+    steps:
+      - name: Only runs if both previous jobs succeeded
+        run: echo "say-hello and uses-a-secret both finished — now I run."
+
+  # ============================================================
+  # JOB 4: matrix-example
+  # One job definition, run multiple times with different inputs.
+  # Watch the Actions tab — this shows up as 3 separate parallel runs.
+  # ============================================================
+  matrix-example:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        fruit: [apple, banana, mango]
+    steps:
+      - name: Show which matrix value this run got
+        run: echo "This run got fruit=${{ matrix.fruit }}"
