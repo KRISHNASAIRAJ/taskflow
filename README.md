@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # TaskFlow
 
 A task-tracking REST API built with Spring Boot, backed by Supabase (Postgres + Auth + Storage).
@@ -56,3 +57,6 @@ This is a **learning-in-progress** project. Current step: Step 3 (Spring Boot sc
 - Storage integration for task attachments
 - Tests: unit, Testcontainers integration tests, pgTAP database tests
 - GitHub Actions CI/CD pipeline
+=======
+# taskflow
+>>>>>>> 7169ca6b8484f64999b37128a173bb7ff5e2bcce
