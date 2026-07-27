@@ -57,5 +57,3 @@ This is a **learning-in-progress** project. Current step: Step 3 (Spring Boot sc
 - Tests: unit, Testcontainers integration tests, pgTAP database tests
 - GitHub Actions CI/CD pipeline
 =======
-# taskflow
->>>>>>> 7169ca6b8484f64999b37128a173bb7ff5e2bcce
