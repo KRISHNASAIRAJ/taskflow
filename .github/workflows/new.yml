@@ -1,0 +1,21 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Printing Hello
+        run: echo "Hello"
+
+      - name: List Directories
+        run: ls -la
+
+      - name: Printing Hello
+        run: echo "Hello"
+  
+  
