@@ -17,5 +17,8 @@ jobs:
 
       - name: Printing Hello
         run: echo "Hello"
-  
+
+      - env:
+          MY_SECRET: ${{secrets.SUPABASE_DB_USER}}
+        run: echo "length is ${#MY_SECRET}"
   
