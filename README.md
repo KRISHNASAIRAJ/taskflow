@@ -15,6 +15,7 @@ This is a **learning-in-progress** project. Current step: Step 3 (Spring Boot sc
 
 ## Setup you still need to do locally
 
+
 1. **Initialize the Supabase CLI project** (this repo only has the migrations folder pre-written):
    ```bash
    supabase init
