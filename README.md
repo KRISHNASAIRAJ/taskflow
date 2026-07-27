@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # TaskFlow
 
 A task-tracking REST API built with Spring Boot, backed by Supabase (Postgres + Auth + Storage).
