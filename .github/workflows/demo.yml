@@ -31,7 +31,8 @@ jobs:
       - name: Use an environment variable
         env:
           MY_MESSAGE: "set at the step level"
-        run: echo "The message is: $MY_MESSAGE"
+        run: |
+          echo "The message is: $MY_MESSAGE"
 
       - name: Steps run top to bottom, and share the same filesystem
         run: |
